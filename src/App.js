@@ -5,16 +5,25 @@ import Test from './Test';
 import useService from './hooks/useService';
 import { ServiceTest } from './ServiceTest';
 import { ServiceTest2 } from './serviceTest2';
+import { observer } from 'mobx-react';
+import TestNormal from './TestNormal';
+import { component, injectService } from './hooks';
 
-function App() {
-  const person = useService(ServiceTest);
+export const ctx = React.createContext({
+  color: 'red'
+});
 
-  console.log('render Father');
+const App = () => {
+  const st1 = injectService(ServiceTest);
+  console.log('render father');
   return (
-    <div className="App">
-      <Test person={person} />
-    </div>
+    <ctx.Provider>
+      <div className="App">
+        <TestNormal />
+      </div>
+      {st1.age}
+    </ctx.Provider>
   );
-}
+};
 
-export default App;
+export default component(App);

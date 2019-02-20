@@ -4,20 +4,16 @@ import { ServiceTest } from './ServiceTest';
 import { model } from './hooks/utils';
 import { ServiceTest2 } from './serviceTest2';
 
-function Test() {
+function Test(props) {
   const person = useService(ServiceTest);
+  const personModel = person;
   console.log('render children');
   return (
     <div>
-      <input
-        onInput={() => {
-          person.fn();
-        }}
-      />
-
+      <input onInput={person.models.nameV_model} />
       {person.name}
     </div>
   );
 }
 
-export default Test;
+export default memo(Test);

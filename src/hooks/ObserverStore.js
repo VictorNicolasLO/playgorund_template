@@ -8,19 +8,16 @@ class ObserverStore {
 
     const listeners = [];
 
-    autorun(
-      /* () => {
-        JSON.stringify(service);
-      },*/
-      () => {
-        console.log('run ', service);
-        const newState = { service };
-        const json = JSON.stringify(service);
-        listeners.forEach(setState => {
-          setState(newState);
-        });
-      }
-    );
+    autorun(() => {
+      console.log('run ', service);
+      const newState = { service };
+      const json = JSON.stringify(service);
+      listeners.forEach(setState => {
+        console.log('running');
+        setState(newState);
+      });
+    });
+
     this.store[Service] = {
       listeners,
       service

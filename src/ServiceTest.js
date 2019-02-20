@@ -1,25 +1,41 @@
 import { observable, action, decorate, computed } from 'mobx';
+import { injectService } from './hooks';
+import { ServiceTest2 } from './serviceTest2';
+import { models } from './hooks/utils';
 
-export class ServiceTest {
-  nameV = 'John';
-  age = 42;
-  showAge = true;
-  obj = {
+@models
+class ServiceTestClass {
+  @observable nameV = 'John';
+  @observable age = 42;
+  @observable showAge = true;
+  @observable obj = {
     n: 'asd'
   };
-  get name() {
+
+  constructor() {
+    this.anotherService = injectService(ServiceTest2);
+  }
+
+  @observable items = ['1', '2', '3', '4'];
+
+  @computed get name() {
     return this.showAge ? `${this.nameV} (age: ${this.age})` : this.nameV;
   }
 
-  fn = () => {
-    this.nameV = 'asdfasfd' + this.nameV;
-  };
+  @computed get nameWithAnotherService() {
+    return this.anotherService.name + '   ' + this.name;
+  }
+
+  @action fn() {
+    /*this.nameV = '0';
+    this.age = 0;*/
+    this.items.forEach((item, index) => {
+      this.items[index] = index + item;
+    });
+    setTimeout(() => {
+      this.items = [1, 1, 1, 1];
+    }, 2000);
+  }
 }
-decorate(ServiceTest, {
-  nameV: observable,
-  age: observable,
-  obj: observable,
-  showAge: observable,
-  name: computed,
-  fn: action
-});
+
+export const ServiceTest = ServiceTestClass;

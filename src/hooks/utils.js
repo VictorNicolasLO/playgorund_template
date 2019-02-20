@@ -16,8 +16,16 @@ export function useForceUpdate() {
   return update;
 }
 
-export function model(input, key) {
-  return e => {
-    input[key] = e.target.value;
+export function models(Target) {
+  return class Result extends Target {
+    models = {};
+    constructor(config) {
+      super(config);
+      for (let i in this) {
+        this.models[i] = e => {
+          this[i] = e.target.value;
+        };
+      }
+    }
   };
 }
